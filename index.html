@@ -1,479 +1,1320 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BSIS Information System - Portfolio</title>
-  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Survey System - Immersive Module</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: '#133e48',
+              accent: '#0d9488',
+              light: '#14b8a6',
+              bg: '#f8fafc',
+              card: '#ffffff'
+            }
+          }
+        }
+      }
+    }
+  </script>
   <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  font-family: "Poppins", sans-serif;
-  background: black;
-  color: white;
-  scroll-behavior: smooth;
-  line-height: 1.6;
-}
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #0d1a29f3;
-  padding: 12px 40px;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0,255,255,0.2);
-}
-
-.left-section {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.small-logo {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  border: 2px solid cyan;
-  object-fit: cover;
-  cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-.small-logo:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 10px cyan;
-}
-
-.nav-links {
-  list-style: none;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-.nav-links a {
-  text-decoration: none;
-  color: #00ffff;
-  font-weight: bold;
-  transition: color 0.3s, transform 0.3s;
-}
-.nav-links a:hover {
-  color: #ff00ff;
-  transform: scale(1.1);
-}
-
-section {
-  max-width: 1100px;
-  margin: 70px auto;
-  padding: 20px;
-}
-
-.container {
-  display: flex;
-  align-items: center;
-  background: #111;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0,255,255,0.1);
-  gap: 40px;
-  position: relative;
-  overflow: hidden;
-}
-.text { flex: 1; }
-.text h1 {
-  font-size: 2.5rem;
-  color: cyan;
-  margin-bottom: 10px;
-}
-.text h2 {
-  color: #ff80ff;
-  margin-bottom: 15px;
-  opacity: 0;
-  animation: fadeSlideIn 2s forwards;
-  animation-delay: 0.5s;
-}
-.text p { color: #e0e0e0; }
-
-.profile img {
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid cyan;
-  box-shadow: 0 0 15px cyan;
-  transition: transform 0.3s;
-  animation: float 3s ease-in-out infinite;
-  position: relative;
-  overflow: hidden;
-}
-.profile img:hover { transform: scale(1.05); }
-
-.social-links { margin-top: 15px; }
-.social-links a {
-  margin-right: 10px;
-  padding: 8px 15px;
-  border-radius: 6px;
-  color: white;
-  font-weight: bold;
-  text-decoration: none;
-  transition: transform 0.3s, box-shadow 0.3s;
-  display: inline-block;
-}
-.social-links a:hover { transform: translateY(-3px); box-shadow: 0 0 10px white; }
-.facebook { background: #1877F2; }
-.instagram { background: linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5); }
-.github { background: #111; border: 1px solid white; }
-
-/* ANIMATIONS */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes fadeSlideIn {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-.about-section {
-  display: flex;
-  gap: 30px;
-  align-items: flex-start;
-  background: #111;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 6px 15px rgba(0,255,255,0.15);
-  position: relative;
-  overflow: hidden;
-}
-.about-section img {
-  width: 160px;
-  height: 160px;
-  border-radius: 12px;
-  object-fit: cover;
-  border: 2px solid cyan;
-}
-.about-text h2 { color: cyan; margin-bottom: 10px; }
-.about-text h3 { color: #ff80ff; }
-
-.projects { text-align: center; }
-.projects h1 { color: cyan; margin-bottom: 20px; }
-.projects-grid {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 25px;
-}
-.project-card {
-  width: 300px;
-  background: #111;
-  border-radius: 12px;
-  box-shadow: 0 0 15px rgba(0,255,255,0.15);
-  overflow: hidden;
-  transition: transform 0.3s, box-shadow 0.3s;
-  position: relative;
-}
-.project-card:hover { transform: translateY(-6px); box-shadow: 0 0 20px cyan; }
-.project-card img { width: 100%; height: 180px; object-fit: cover; }
-.project-card h3 { margin: 10px; color: #ff80ff; }
-.project-card p { margin: 0 10px 15px; font-size: 0.9rem; color: #ddd; }
-.project-card a {
-  display: inline-block;
-  margin: 0 10px 10px;
-  padding: 8px 12px;
-  border-radius: 6px;
-  background: cyan;
-  color: black;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background 0.3s;
-}
-.project-card a:hover { background: #00e6e6; }
-
-.skills { text-align: center; }
-.skills h1 { color: cyan; margin-bottom: 20px; }
-.skills-cards {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 25px;
-}
-.card {
-  width: 300px;
-  background: #111;
-  border-radius: 12px;
-  padding: 25px;
-  box-shadow: 0 0 15px rgba(255,255,255,0.1);
-  transition: transform 0.3s, background 0.3s;
-  position: relative;
-  overflow: hidden;
-}
-.card:hover {
-  transform: translateY(-6px);
-  background: #0d1b2a;
-  box-shadow: 0 0 10px cyan;
-}
-.card h3 { margin-bottom: 10px; color: #00ffff; }
-.card p { color: #ccc; }
-
-.contact {
-  background: #111;
-  border-radius: 12px;
-  padding: 30px;
-  box-shadow: 0 0 20px rgba(0,255,255,0.15);
-  position: relative;
-  overflow: hidden;
-}
-.contact h1 {
-  color: cyan;
-  margin-bottom: 20px;
-  text-align: center;
-}
-.contact-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-}
-.contact-info { flex: 1; }
-.contact-form { flex: 2; }
-.form-group {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-input, textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #333;
-  border-radius: 6px;
-  background: #000;
-  color: #fff;
-  transition: border 0.3s, box-shadow 0.3s;
-}
-input:focus, textarea:focus {
-  border-color: cyan;
-  box-shadow: 0 0 8px cyan;
-  outline: none;
-}
-button {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 6px;
-  background: cyan;
-  color: black;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
-}
-button:hover {
-  background: #00e6e6;
-  transform: translateY(-2px);
-  box-shadow: 0 0 12px cyan;
-}
-
-.map-section {
-  text-align: center;
-  margin-top: 30px;
-  position: relative;
-  overflow: hidden;
-  border-radius: 12px;
-}
-.map-section iframe {
-  width: 100%;
-  height: 350px;
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 0 15px cyan;
-}
-.map-section h2 { color: #ff80ff; }
-.map-section a {
-  display: inline-block;
-  margin-top: 10px;
-  color: cyan;
-  text-decoration: none;
-  font-weight: bold;
-}
-.map-section a:hover {
-  text-decoration: underline;
-  color: #ff80ff;
-}
-
-footer {
-  background: #0d1b2a;
-  color: cyan;
-  text-align: center;
-  padding: 15px;
-  margin-top: 40px;
-  box-shadow: 0 -2px 10px rgba(0,255,255,0.2);
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .container { flex-direction: column; align-items: center; text-align: center; }
-  .about-section { flex-direction: column; align-items: center; text-align: center; }
-  .contact-container { flex-direction: column; }
-}
-
-/* 🔥 CYAN ROTATING BORDER EFFECT 🔥 */
-@keyframes rotateBorder {
-  0% { background-position: 0% 50%; transform: rotate(0deg); }
-  100% { background-position: 100% 50%; transform: rotate(360deg); }
-}
-
-.container::before,
-.about-section::before,
-.project-card::before,
-.contact::before,
-.card::before,
-.map-section::before,
-.profile img::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  padding: 2px;
-  border-radius: inherit;
-  background: linear-gradient(45deg, cyan, lightcyan, #00ffff, cyan);
-  background-size: 300% 300%;
-  animation: rotateBorder 5s linear infinite;
-  z-index: -1;
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  -webkit-mask-composite: destination-out;
-} 
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    .q-card { transition: all 0.25s ease-in-out; }
+    .q-card:focus-within, .q-card.active-q { border-color: #0d9488; box-shadow: 0 4px 20px -2px rgba(13,148,136,0.18); }
+    .fade-in { animation: fadeIn 0.3s ease-in; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .robot-logo-container { position: relative; width: 40px; height: 40px; perspective: 500px; }
+    .robot-logo {
+      width: 100%; height: 100%; border-radius: 12px;
+      background: linear-gradient(135deg, #14b8a6, #0d9488, #0f766e);
+      display: flex; align-items: center; justify-content: center;
+      animation: rotateVertical 3s linear infinite; transform-style: preserve-3d;
+      box-shadow: 0 0 15px rgba(20, 184, 166, 0.6), 0 0 30px rgba(20, 184, 166, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.2);
+      position: relative; overflow: hidden;
+    }
+    .robot-logo::before {
+      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+      animation: shine 3s linear infinite;
+    }
+    .robot-logo i { font-size: 22px; color: white; z-index: 1; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+    .robot-logo-pulse { position: absolute; inset: -4px; border-radius: 14px; border: 2px solid #14b8a6; animation: pulse-ring 2s ease-out infinite; }
+    @keyframes rotateVertical { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
+    @keyframes shine { from { transform: translateX(-100%) translateY(-100%) rotate(45deg); } to { transform: translateX(100%) translateY(100%) rotate(45deg); } }
+    @keyframes pulse-ring { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.3); opacity: 0; } }
+    .lang-btn { transition: all 0.2s; }
+    .lang-btn.active { background: #0d9488; color: white; border-color: #0d9488; }
   </style>
 </head>
-<body>
 
-<nav class="navbar">
-  <div class="left-section">
-    <img src="be922058-43ce-4739-93b4-4d0f18be590d.jpg" alt="Logo" class="small-logo" onclick="scrollToHome()">
-    <a href="#home" style="color:cyan; font-weight:bold; text-decoration:none;">🏠 Home</a>
-  </div>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
+<body class="bg-slate-100 font-sans text-slate-800 flex h-screen overflow-hidden">
 
-<section id="home" class="container">
-  <div class="text">
-    <h1>Hello, I am Tat'zkie</h1>
-    <h2>Welcome to my BSIS website</h2>
-    <p>I am Tat'zkie, a passionate beginner in web and mobile development.
-    I started my coding journey in 2025 when I chose BSIS.
-    Now, I continue to sharpen my dreams through every line of code.</p>
-    <div class="social-links">
-      <a href="#" class="facebook">Facebook</a>
-      <a href="#" class="instagram">Instagram</a>
-      <a href="#" class="github">GitHub</a>
-    </div>
-  </div>
-  <div class="profile">
-    <img src="tatz.jpg" alt="Profile Picture">
-  </div>
-</section>
-
-<section id="about" class="about-section">
-  <img src="tatz.jpg" alt="About Me">
-  <div class="about-text">
-    <h2>About Me</h2>
-    <h3>I am Tat'zkie</h3>
-    <p>Before I discovered programming, it was a mystery.
-    In 2025, I opened the door and started this journey.
-    Now as a first-year BSIS student at Western Philippines University,
-    I dedicate sleepless nights to coding, building, and dreaming big.</p>
-  </div>
-</section>
-
-<section id="projects" class="projects">
-  <h1>My Projects</h1>
-  <div class="projects-grid">
-    <div class="project-card">
-      <img src="f056397f-f04d-4e2f-a725-45eef88b5411.jpg" alt="Video Editing">
-      <h3>Tat'z Video</h3>
-      <p>Created a short school event video showcasing visuals and storytelling.</p>
-      <a href="#">Video</a>
-    </div>
-    <div class="project-card">
-      <img src="19f14d18-c416-4c85-9c41-0c14319873e2.jpg" alt="Photography">
-      <h3>Tat'z Gallery</h3>
-      <p>Captured portraits and landscapes with creative lighting.</p>
-      <a href="#">Gallery</a>
-    </div>
-    <div class="project-card">
-      <img src="1ac5171a-f389-4200-8c56-3134e08647a2.jpg" alt="my Tat'z Thumbnail">
-      <h3>My Tat'z Files</h3>
-      <p>Tat’z: Hardworking, creative, positive Talented.</p>
-      <a href="#">My File</a>
-    </div>
-  </div>
-</section>
-
-<section id="skills" class="skills">
-  <h1>My Skills</h1>
-  <div class="skills-cards">
-    <div class="card">
-      <h3>💻 Web Development</h3>
-      <p>HTML, CSS, JavaScript, React, Bootstrap, Tailwind.</p>
-    </div>
-    <div class="card">
-      <h3>⚙️ Backend Development</h3>
-      <p>MySQL, PHP, Node.js, Express.</p>
-    </div>
-    <div class="card">
-      <h3>📱 Mobile App Development</h3>
-      <p>React Native for iOS & Android apps.</p>
-    </div>
-  </div>
-</section>
-
-<section id="contact" class="contact">
-  <h1>Contact Me</h1>
-  <div class="contact-container">
-    <div class="contact-info">
-      <p><strong>📍 Address:</strong> Bataraza,Palawan.</p>
-      <p><strong>✉️ Email:</strong> tatzkiezuyanib@gmail.com</p>
-      <p><strong>📞 Phone:</strong> ...........</p>
-    </div>
-    <div class="contact-form">
-      <form>
-        <div class="form-group">
-          <input type="text" placeholder="Name" required>
-          <input type="email" placeholder="Email" required>
-        </div>
-        <div class="form-group">
-          <input type="text" placeholder="Phone Number" required>
-          <input type="text" placeholder="Subject" required>
-        </div>
-        <textarea placeholder="Message" required></textarea>
-        <button type="submit">Send Message</button>
+  <!-- Login Overlay -->
+  <div id="login-overlay" class="fixed inset-0 bg-brand-dark z-[100] flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-8 text-center fade-in">
+      <div class="robot-logo-container mx-auto mb-4" style="width: 60px; height: 60px;">
+        <div class="robot-logo-pulse"></div>
+        <div class="robot-logo"><i class="fa-solid fa-robot" style="font-size: 28px;"></i></div>
+      </div>
+      <h2 class="text-xl font-bold text-slate-800 mb-2">System Login</h2>
+      <p class="text-xs text-slate-500 mb-6">Enter the 4-digit password to access the AI Survey System.</p>
+      <form onsubmit="handleLogin(event)" class="space-y-4">
+        <input type="password" id="login-password" maxlength="4" pattern="\d{4}" inputmode="numeric" required 
+               class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-3 text-center text-2xl font-bold tracking-widest focus:ring-2 focus:ring-teal-500 focus:outline-none transition" 
+               placeholder="0000">
+        <p id="login-error" class="text-xs text-rose-600 font-semibold hidden">Incorrect password. Please try again.</p>
+        <button type="submit" class="w-full py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-bold shadow-sm transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-right-to-bracket"></i> Login
+        </button>
       </form>
     </div>
   </div>
 
-  <div class="map-section">
-    <h2>📍 Find Me on Google Maps</h2>
-    <iframe 
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3912.123456789!2d117.123456!3d8.123456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x323456789abcdef%3A0xabcdef123456789!2sBataraza%2C%20Palawan!5e0!3m2!1sen!2sph!4v1699999999999!5m2!1sen!2sph" 
-      allowfullscreen="" loading="lazy">
-    </iframe>
+  <aside class="w-64 bg-brand-dark text-white flex flex-col justify-between flex-shrink-0 shadow-lg overflow-y-auto">
+    <div>
+      <div class="p-4 flex items-center gap-3 border-b border-slate-700/50">
+        <div class="robot-logo-container">
+          <div class="robot-logo-pulse"></div>
+          <div class="robot-logo"><i class="fa-solid fa-robot"></i></div>
+        </div>
+        <div>
+          <h1 class="font-bold text-sm tracking-wide text-white">AI Survey System</h1>
+          <p class="text-[10px] text-teal-300 font-medium tracking-wider uppercase">QUamet Project</p>
+        </div>
+      </div>
+
+      <nav class="p-3 space-y-1 text-xs">
+        <p class="px-3 py-2 text-[10px] font-semibold text-slate-400 tracking-wider uppercase">MODULE NAVIGATION</p>
+        <button onclick="switchTab('analytics')" id="nav-analytics" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition text-white bg-brand-accent">
+          <i class="fa-solid fa-chart-pie w-4 text-center"></i><span>Data Analytics</span>
+        </button>
+        <button onclick="switchTab('respondent')" id="nav-respondent" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60 hover:text-white transition">
+          <i class="fa-solid fa-user-check w-4 text-center"></i><span>Respondent Login</span>
+        </button>
+        <button onclick="switchTab('database')" id="nav-database" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-300 hover:bg-slate-800/60 hover:text-white transition">
+          <i class="fa-solid fa-database w-4 text-center"></i><span>Respondent Database</span>
+        </button>
+      </nav>
+    </div>
+
+    <div class="p-3 m-3 bg-slate-800/80 rounded-xl border border-slate-700/60 text-xs">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-slate-300 font-medium">My Group:</span>
+        <span id="status-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Tj</span>
+      </div>
+      <button onclick="toggleNetwork()" id="toggle-net-btn" class="w-full py-1.5 px-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-[11px] font-medium transition flex items-center justify-center gap-2">
+        <i class="fa-solid fa-toggle-on text-emerald-400"></i> Final Project
+      </button>
+    </div>
+  </aside>
+
+  <main class="flex-1 flex flex-col h-full overflow-hidden bg-slate-100">
+    <header class="bg-white border-b border-slate-200 px-6 py-3.5 flex items-center justify-between shadow-sm flex-shrink-0">
+      <div>
+        <h2 id="page-title" class="text-base font-bold text-slate-800">1. Survey Data Analytics</h2>
+        <p class="text-xs text-slate-500">AI Survey Instrument • Operational Dashboard</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-3 text-xs bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+          <div><span class="text-slate-500">Active Days:</span> <strong id="active-surveys-count" class="text-slate-700">0</strong></div>
+          <div class="h-3 w-px bg-slate-300"></div>
+          <div><span class="text-slate-500">Submissions:</span> <strong id="total-submissions" class="text-teal-600">0</strong></div>
+        </div>
+        
+        <button onclick="openAdminModal()" class="flex items-center gap-2 text-xs font-medium text-slate-700 hover:bg-slate-100 p-2 rounded-lg transition cursor-pointer group">
+          <div id="admin-avatar" class="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold text-xs shadow-sm group-hover:bg-teal-700 transition">A</div>
+          <span id="admin-name-display">Admin</span>
+          <i class="fa-solid fa-gear text-slate-400 ml-1 group-hover:text-teal-600 transition"></i>
+        </button>
+      </div>
+    </header>
+
+    <div class="flex-1 overflow-y-auto p-6 space-y-6">
+      <section id="tab-analytics" class="tab-content space-y-5">
+        <div id="analytics-empty-state" class="bg-white p-12 rounded-xl border border-slate-200 shadow-sm text-center">
+          <i class="fa-solid fa-chart-line text-slate-300 text-6xl mb-4"></i>
+          <h3 class="text-lg font-bold text-slate-600 mb-2">No Analytics Data Yet</h3>
+          <p class="text-sm text-slate-500">The analytics dashboard will populate automatically when respondents submit surveys with answers.</p>
+        </div>
+        <div id="analytics-content" class="hidden space-y-5">
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-wrap gap-3 items-center justify-between text-xs">
+            <div class="flex flex-wrap items-center gap-3">
+              <div>
+                <label class="block text-slate-500 text-[10px] uppercase font-bold mb-1">Respondent Group</label>
+                <select class="bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 font-medium"><option>All Groups</option></select>
+              </div>
+              <div>
+                <label class="block text-slate-500 text-[10px] uppercase font-bold mb-1">Date Range</label>
+                <input type="date" value="2026-10-01" class="bg-slate-50 border border-slate-300 rounded-lg px-2 py-1">
+              </div>
+            </div>
+            <button class="px-3.5 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-semibold transition flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-filter"></i> Apply Filters
+            </button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm border-l-4 border-l-teal-500">
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-xs font-bold text-slate-500 uppercase">Structured Interviews</span>
+                <span id="structured-count" class="text-xs font-bold text-teal-600">0 Responses</span>
+              </div>
+              <div id="structured-percentage" class="text-2xl font-extrabold text-slate-800">0%</div>
+              <p class="text-[11px] text-slate-500 mt-1">Predefined quantitative metrics & prompts.</p>
+            </div>
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm border-l-4 border-l-sky-500">
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-xs font-bold text-slate-500 uppercase">Semi-Structured</span>
+                <span id="semi-structured-count" class="text-xs font-bold text-sky-600">0 Responses</span>
+              </div>
+              <div id="semi-structured-percentage" class="text-2xl font-extrabold text-slate-800">0%</div>
+              <p class="text-[11px] text-slate-500 mt-1">Standardized queries with dynamic follow-ups.</p>
+            </div>
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm border-l-4 border-l-indigo-500">
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-xs font-bold text-slate-500 uppercase">Unstructured</span>
+                <span id="unstructured-count" class="text-xs font-bold text-indigo-600">0 Responses</span>
+              </div>
+              <div id="unstructured-percentage" class="text-2xl font-extrabold text-slate-800">0%</div>
+              <p class="text-[11px] text-slate-500 mt-1">Open conversation & sentiment analysis.</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+            <div class="lg:col-span-2 bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+              <h4 class="text-xs font-bold text-slate-700 uppercase mb-4 flex items-center justify-between">
+                <span>Response Quality by Day (Monday to Sunday)</span>
+                <span class="text-[10px] text-slate-400 font-normal">Updated Live</span>
+              </h4>
+              <div class="h-64"><canvas id="analyticsChart"></canvas></div>
+            </div>
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+              <div>
+                <h4 class="text-xs font-bold text-slate-700 uppercase mb-3 flex items-center gap-2">
+                  <i class="fa-solid fa-brain text-teal-600"></i> AI Sentiment Keyword Analysis
+                </h4>
+                <p class="text-xs text-slate-500 mb-4">Extracted keywords from qualitative student responses.</p>
+                <div id="sentiment-keywords" class="flex flex-wrap gap-2 text-xs"></div>
+              </div>
+              <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-400">
+                Overall Academic Sentiment: <strong id="overall-sentiment" class="text-emerald-600">0% Positive</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-respondent" class="tab-content hidden space-y-6">
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="mb-6 pb-4 border-b border-slate-100 flex items-center justify-between">
+            <div>
+              <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-user-check text-teal-600"></i> Respondent Portal & Questionnaire
+              </h3>
+              <p class="text-xs text-slate-500 mt-1">Complete your information on the left and click <strong>Generate Question</strong> to load your survey questions one by one.</p>
+            </div>
+            <span id="completion-counter" class="hidden px-3 py-1 bg-teal-50 text-teal-700 border border-teal-200 rounded-full text-xs font-bold">0 / 10 Answered</span>
+          </div>
+
+          <form id="respondent-login-form" onsubmit="submitRespondentForm(event)" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-5 space-y-4 bg-slate-50/80 p-5 rounded-xl border border-slate-200">
+              <h4 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-address-card text-teal-600"></i> Respondent Information
+              </h4>
+
+              <div class="bg-white p-3 rounded-lg border border-slate-200">
+                <label class="block text-xs font-semibold text-slate-600 mb-2 flex items-center gap-1.5">
+                  <i class="fa-solid fa-globe text-teal-600"></i> Question Language
+                </label>
+                <div class="flex gap-2">
+                  <button type="button" id="lang-en-btn" onclick="switchLanguage('en')" class="lang-btn active flex-1 py-2 px-3 rounded-lg text-xs font-bold border border-slate-300 transition flex items-center justify-center gap-1.5">
+                    <span>🇬🇧</span> English
+                  </button>
+                  <button type="button" id="lang-tl-btn" onclick="switchLanguage('tl')" class="lang-btn flex-1 py-2 px-3 rounded-lg text-xs font-bold border border-slate-300 bg-white text-slate-600 transition flex items-center justify-center gap-1.5">
+                    <span>🇵🇭</span> Tagalog
+                  </button>
+                </div>
+                <p id="current-lang-display" class="text-[10px] text-slate-500 mt-2 text-center italic">Current: English</p>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label for="respondent-first-name" class="block text-xs font-semibold text-slate-600 mb-1">First Name</label>
+                  <input type="text" id="respondent-first-name" required placeholder="" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-teal-500 focus:outline-none">
+                </div>
+                <div>
+                  <label for="respondent-last-name" class="block text-xs font-semibold text-slate-600 mb-1">Last Name</label>
+                  <input type="text" id="respondent-last-name" required placeholder="" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-teal-500 focus:outline-none">
+                </div>
+              </div>
+
+              <div>
+                <label for="respondent-type" class="block text-xs font-semibold text-slate-600 mb-1">Respondent Type</label>
+                <select id="respondent-type" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-teal-500 focus:outline-none">
+                  <option value="">Select Respondent Type</option>
+                  <option value="Direct Instructor">Direct Instructor</option>
+                  <option value="Semi-Direct Instructor">Semi-Direct Instructor</option>
+                  <option value="Indirect Instructor">Indirect Instructor</option>
+                  <option value="Student">Student</option>
+                </select>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label for="respondent-question-type" class="block text-xs font-semibold text-slate-600 mb-1">Question Type</label>
+                  <select id="respondent-question-type" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-teal-500 focus:outline-none">
+                    <option value="">Select Question Type</option>
+                    <option value="Structured">Structured</option>
+                    <option value="Semi-Structured">Semi-Structured</option>
+                    <option value="Unstructured">Unstructured</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="respondent-date" class="block text-xs font-semibold text-slate-600 mb-1">Date</label>
+                  <input type="date" id="respondent-date" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-teal-500 focus:outline-none">
+                </div>
+              </div>
+
+              <div>
+                <label for="respondent-course" class="block text-xs font-semibold text-slate-600 mb-1">Course / Degree Program</label>
+                <select id="respondent-course" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-teal-500 focus:outline-none">
+                  <option value="">Select Course / Degree Program</option>
+                  <option value="CCAS">CCAS</option>
+                  <option value="CPACD">CPACD</option>
+                  <option value="CBEHM">CBEHM</option>
+                  <option value="CRIMINOLOGY">CRIMINOLOGY</option>
+                  <option value="CET">CET</option>
+                  <option value="CAFES">CAFES</option>
+                  <option value="CFINS">CFINS</option>
+                  <option value="CED">CED</option>
+                </select>
+              </div>
+
+              <div class="pt-2">
+                <button type="submit" class="w-full py-2.5 px-4 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-bold shadow-sm transition flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Question (10)
+                </button>
+              </div>
+              <p id="respondent-form-message" role="status" class="text-xs text-center font-medium"></p>
+            </div>
+
+            <div class="lg:col-span-7 flex flex-col">
+              <div class="flex items-center justify-between mb-3">
+                <h4 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider flex items-center gap-2">
+                  <i class="fa-solid fa-list-check text-teal-600"></i> Survey Questionnaire
+                </h4>
+                <button type="button" onclick="randomizeQuestionsAgain()" id="btn-re-randomize" class="hidden text-xs text-teal-700 hover:text-teal-900 font-semibold flex items-center gap-1">
+                  <i class="fa-solid fa-rotate"></i> Randomize Questions Again
+                </button>
+              </div>
+
+              <div id="response-analytics-container" class="hidden bg-gradient-to-br from-white to-slate-50 p-6 rounded-2xl border-2 border-teal-200 shadow-lg mb-4">
+                <div class="flex items-center justify-between mb-4">
+                  <h5 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-line text-teal-600"></i> Response Analytics
+                  </h5>
+                  <div id="total-percentage-display" class="text-lg font-extrabold text-teal-700">0%</div>
+                </div>
+                <div class="h-64 mb-4"><canvas id="responseChart"></canvas></div>
+                <div class="grid grid-cols-3 gap-3 text-center">
+                  <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+                    <div class="text-2xl font-bold text-emerald-700" id="correct-count">0</div>
+                    <div class="text-[10px] text-emerald-600 font-semibold uppercase">Right</div>
+                  </div>
+                  <div class="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                    <div class="text-2xl font-bold text-amber-700" id="moderate-count">0</div>
+                    <div class="text-[10px] text-amber-600 font-semibold uppercase">Fact</div>
+                  </div>
+                  <div class="bg-rose-50 border border-rose-200 rounded-lg p-3">
+                    <div class="text-2xl font-bold text-rose-700" id="incorrect-count">0</div>
+                    <div class="text-[10px] text-rose-600 font-semibold uppercase">Incorrect</div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="questions-wrapper" class="flex-1 min-h-[420px] bg-slate-50 border border-slate-200 rounded-xl p-4 overflow-y-auto space-y-4 max-h-[620px]">
+                <div id="questions-placeholder" class="h-full flex flex-col items-center justify-center text-center p-8 text-slate-400 my-auto">
+                  <div class="w-16 h-16 rounded-2xl bg-slate-200/60 flex items-center justify-center text-2xl text-slate-400 mb-3">
+                    <i class="fa-solid fa-clipboard-question"></i>
+                  </div>
+                  <h5 class="text-sm font-bold text-slate-600">No Questions Generated Yet</h5>
+                  <p class="text-xs text-slate-400 max-w-xs mt-1">Fill out the respondent information on the left and click "Generate Question" to start.</p>
+                </div>
+                <div id="questions-list" class="space-y-4 hidden"></div>
+              </div>
+              <div id="final-submit-wrapper" class="hidden pt-4"></div>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section id="tab-database" class="tab-content hidden space-y-5">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-wrap gap-3 items-center justify-between text-xs">
+          <div class="flex items-center gap-3 flex-1 max-w-md">
+            <div class="relative w-full">
+              <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+              <input type="text" id="database-search" oninput="filterDatabase()" placeholder="Search respondent name, course, or ID..." class="w-full bg-slate-50 border border-slate-300 rounded-lg pl-9 pr-3 py-1.5 text-xs focus:ring-2 focus:ring-teal-500 focus:outline-none">
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <select id="database-filter" onchange="filterDatabase()" class="bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs font-medium">
+              <option value="">All Courses</option>
+              <option value="CCAS">CCAS</option>
+              <option value="CPACD">CPACD</option>
+              <option value="CBEHM">CBEHM</option>
+              <option value="CRIMINOLOGY">CRIMINOLOGY</option>
+              <option value="CET">CET</option>
+              <option value="CAFES">CAFES</option>
+              <option value="CFINS">CFINS</option>
+              <option value="CED">CED</option>
+            </select>
+            <button onclick="clearAllDatabase()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg font-semibold text-xs flex items-center gap-1 transition">
+              <i class="fa-solid fa-trash"></i> Clear All
+            </button>
+            <button onclick="exportDatabase()" class="px-3 py-1.5 bg-teal-600 text-white rounded-lg font-semibold text-xs flex items-center gap-1">
+              <i class="fa-solid fa-download"></i> Export Data
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[10px]">
+              <tr>
+                <th class="p-3">ID</th>
+                <th class="p-3">Respondent Name</th>
+                <th class="p-3">Type</th>
+                <th class="p-3">Course / Question Type</th>
+                <th class="p-3">Completed Questions</th>
+                <th class="p-3">Date Submitted</th>
+                <th class="p-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="database-tbody" class="divide-y divide-slate-100 font-medium text-slate-700"></tbody>
+          </table>
+          <div id="empty-database-message" class="p-8 text-center">
+            <i class="fa-solid fa-database text-slate-300 text-5xl mb-3"></i>
+            <h5 class="text-sm font-bold text-slate-600 mb-1">No Respondents Yet</h5>
+            <p class="text-xs text-slate-400">The database will populate automatically when respondents submit surveys.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div id="admin-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 backdrop-blur-sm transition-opacity">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 transform transition-all scale-100 mx-4">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-user-shield text-teal-600"></i> Admin Settings
+        </h3>
+        <button onclick="closeAdminModal()" class="text-slate-400 hover:text-slate-600 transition p-1 rounded-full hover:bg-slate-100">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Admin Name</label>
+          <input type="text" id="admin-name-input" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none transition" placeholder="Enter admin name">
+          <p class="text-[10px] text-slate-400 mt-1">This name will be displayed in the top right corner.</p>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">System Password (4 digits)</label>
+          <input type="password" id="system-password-input" maxlength="4" pattern="\d{4}" inputmode="numeric" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none transition" placeholder="Enter new 4-digit password">
+          <p class="text-[10px] text-slate-400 mt-1">Leave blank to keep current password. Must be exactly 4 digits.</p>
+        </div>
+        <button onclick="saveAdminSettings()" class="w-full py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-bold shadow-sm transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-save"></i> Save Changes
+        </button>
+      </div>
+    </div>
   </div>
-</section>
 
-<footer>
-  <p>"2025, Jerson Uyanib Basaya Gulay, | BSIS | Bachelor of Science in Information System."</p>
-</footer>
+  <script>
+    let currentQuestions = [];
+    let currentQuestionIndex = 0;
+    let surveyAnswers = {};
+    let currentQuestionMode = 'individual';
+    let responseChart = null;
+    let analyticsChart = null;
+    let currentLanguage = 'en';
+    let respondentDatabase = [];
+    let nextRespondentId = 1080;
+    let currentAdminName = "Admin";
+    
+    // --- ADDED: Login & Password Variables ---
+    let systemPassword = localStorage.getItem('systemPassword') || '1234';
+    let isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
 
-<script>
-  function scrollToHome() {
-    document.getElementById("home").scrollIntoView({ behavior: "smooth" });
-  }
-</script>
+    function handleLogin(e) {
+      e.preventDefault();
+      const inputPwd = document.getElementById('login-password').value;
+      if (inputPwd === systemPassword) {
+        sessionStorage.setItem('isLoggedIn', 'true');
+        document.getElementById('login-overlay').classList.add('hidden');
+        document.getElementById('login-error').classList.add('hidden');
+      } else {
+        document.getElementById('login-error').classList.remove('hidden');
+        document.getElementById('login-password').value = '';
+        document.getElementById('login-password').focus();
+      }
+    }
+    // -----------------------------------------
 
+    function getLocalDate() {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    try {
+      const storedDB = localStorage.getItem('respondentDatabase');
+      if (storedDB) {
+        respondentDatabase = JSON.parse(storedDB);
+        if (!Array.isArray(respondentDatabase)) respondentDatabase = [];
+      }
+      const storedId = localStorage.getItem('nextRespondentId');
+      if (storedId) nextRespondentId = parseInt(storedId) || 1080;
+      
+      const storedAdmin = localStorage.getItem('currentAdminName');
+      if (storedAdmin) currentAdminName = storedAdmin;
+    } catch (e) {
+      console.error('Error loading localStorage:', e);
+    }
+
+    const courseQuestionBank = {
+      "CCAS": {
+        en: {
+          individual: ["How do you personally evaluate the effectiveness of information systems in your institution?", "What specific improvements would you personally suggest for the student portal?", "How well do you feel the curriculum has prepared you for IT industry standards?", "Are the computer laboratories adequate for your personal coursework needs?", "How would you personally rate the internet connectivity on campus?", "What software tools do you personally think should be added to the curriculum?", "How effective do you find the technical support provided by the IT department?", "Do you personally feel the coding subjects are taught with sufficient practical application?", "How well do you think cybersecurity concepts are integrated into your courses?", "What is your personal overall satisfaction with the CCAS program?"],
+          random: ["How effective are the information systems utilized in your institution?", "What improvements can be made to the current student portal?", "How well does the curriculum prepare you for industry standards?", "Are the computer laboratories adequately equipped for your coursework?", "How would you rate the internet connectivity on campus?", "What software tools should be added to the curriculum?", "How effective is the technical support provided by the IT department?", "Do you feel the coding subjects are taught with sufficient practical application?", "How well are cybersecurity concepts integrated into your courses?", "What is your overall satisfaction with the CCAS program?"],
+          group: ["How does your group evaluate the effectiveness of information systems in your institution?", "What specific improvements would your group suggest for the student portal?", "How well does your group feel the curriculum has prepared students for industry standards?", "Are the computer laboratories adequate for your group's coursework needs?", "How would your group rate the internet connectivity on campus?", "What software tools does your group think should be added to the curriculum?", "How effective does your group find the technical support provided by the IT department?", "Does your group feel the coding subjects are taught with sufficient practical application?", "How well does your group think cybersecurity concepts are integrated into the courses?", "What is your group's overall satisfaction with the CCAS program?"]
+        },
+        tl: {
+          individual: ["Paano mo personal na sinusuri ang kahusayan ng mga information system sa iyong institusyon?", "Anong mga tiyak na pagpapabuti ang iyong personal na imumungkahi para sa student portal?", "Gaano mo nararamdaman na naihanda ka ng curriculum para sa mga pamantayan ng industriya ng IT?", "Sapat ba ang mga computer laboratory para sa iyong personal na pangangailangan sa pag-aaral?", "Paano mo personal na i-rate ang koneksyon ng internet sa campus?", "Anong mga software tools ang sa tingin mo ay dapat idagdag sa curriculum?", "Gaano mo epektibo ang teknikal na suporta na ibinibigay ng IT department?", "Sa tingin mo ba ay may sapat na praktikal na aplikasyon ang pagtuturo ng mga coding subjects?", "Gaano mo sa tingin ang pagkakaisa ng mga konsepto ng cybersecurity sa iyong mga kurso?", "Ano ang iyong personal na pangkalahatang kasiyahan sa programa ng CCAS?"],
+          random: ["Gaano kaepektibo ang mga information system na ginagamit sa iyong institusyon?", "Anong mga pagpapabuti ang maaaring gawin sa kasalukuyang student portal?", "Gaano kahusay ang paghahanda ng curriculum para sa mga pamantayan ng industriya?", "Sapat ba ang mga computer laboratory para sa iyong pag-aaral?", "Paano mo i-rate ang koneksyon ng internet sa campus?", "Anong mga software tools ang dapat idagdag sa curriculum?", "Gaano kaepektibo ang teknikal na suporta na ibinibigay ng IT department?", "Nararamdaman mo ba na may sapat na praktikal na aplikasyon ang pagtuturo ng coding?", "Gaano ang pagkakaisa ng mga konsepto ng cybersecurity sa iyong mga kurso?", "Ano ang iyong pangkalahatang kasiyahan sa programa ng CCAS?"],
+          group: ["Paano sinuri ng inyong grupo ang kahusayan ng mga information system sa inyong institusyon?", "Anong mga tiyak na pagpapabuti ang imumungkahi ng inyong grupo para sa student portal?", "Gaano nararamdaman ng inyong grupo na naihanda ng curriculum ang mga estudyante para sa mga pamantayan ng industriya?", "Sapat ba ang mga computer laboratory para sa pangangailangan ng inyong grupo sa pag-aaral?", "Paano i-rate ng inyong grupo ang koneksyon ng internet sa campus?", "Anong mga software tools ang sa tingin ng inyong grupo ay dapat idagdag sa curriculum?", "Gaano epektibo sa tingin ng inyong grupo ang teknikal na suporta ng IT department?", "Nararamdaman ba ng inyong grupo na may sapat na praktikal na aplikasyon ang pagtuturo ng coding?", "Gaano sa tingin ng inyong grupo ang pagkakaisa ng cybersecurity concepts sa mga kurso?", "Ano ang pangkalahatang kasiyahan ng inyong grupo sa programa ng CCAS?"]
+        }
+      },
+      "CPACD": {
+        en: { individual: ["How do you personally evaluate the effectiveness of public administration training in your institution?", "What specific community development projects do you think should be prioritized?", "How well do you feel the curriculum prepares you for local government service?", "Are the internship opportunities adequate for your career development?", "How would you personally rate the faculty's expertise in public policy?", "What skills do you personally think should be emphasized in public administration?", "How effective do you find the research facilities for community studies?", "Do you personally feel the program addresses current governance challenges?", "How well do you think civic engagement is integrated into your courses?", "What is your personal overall satisfaction with the CPACD program?"], random: ["How effective is the public administration training in your institution?", "What community development projects should be prioritized?", "How well does the curriculum prepare you for local government service?", "Are the internship opportunities adequate for career development?", "How would you rate the faculty's expertise in public policy?", "What skills should be emphasized in public administration?", "How effective are the research facilities for community studies?", "Does the program address current governance challenges?", "How well is civic engagement integrated into the courses?", "What is your overall satisfaction with the CPACD program?"], group: ["How does your group evaluate the effectiveness of public administration training?", "What community development projects does your group think should be prioritized?", "How well does your group feel the curriculum prepares students for local government service?", "Are the internship opportunities adequate for your group's career development?", "How would your group rate the faculty's expertise in public policy?", "What skills does your group think should be emphasized in public administration?", "How effective does your group find the research facilities for community studies?", "Does your group feel the program addresses current governance challenges?", "How well does your group think civic engagement is integrated into the courses?", "What is your group's overall satisfaction with the CPACD program?"] },
+        tl: { individual: ["Paano mo personal na sinusuri ang kahusayan ng pagsasanay sa public administration sa iyong institusyon?", "Anong mga tiyak na community development projects ang sa tingin mo ay dapat unahin?", "Gaano mo nararamdaman na naihanda ka ng curriculum para sa serbisyo sa lokal na pamahalaan?", "Sapat ba ang mga internship opportunities para sa iyong career development?", "Paano mo personal na i-rate ang kadalubhasaan ng faculty sa public policy?", "Anong mga skills ang sa tingin mo ay dapat bigyang-diin sa public administration?", "Gaano mo epektibo ang mga research facilities para sa community studies?", "Sa tingin mo ba ay tinutugunan ng programa ang mga kasalukuyang hamon sa pamamahala?", "Gaano mo sa tingin ang pagkakaisa ng civic engagement sa iyong mga kurso?", "Ano ang iyong personal na pangkalahatang kasiyahan sa programa ng CPACD?"], random: ["Gaano kaepektibo ang pagsasanay sa public administration sa iyong institusyon?", "Anong mga community development projects ang dapat unahin?", "Gaano kahusay ang paghahanda ng curriculum para sa serbisyo sa lokal na pamahalaan?", "Sapat ba ang mga internship opportunities para sa career development?", "Paano mo i-rate ang kadalubhasaan ng faculty sa public policy?", "Anong mga skills ang dapat bigyang-diin sa public administration?", "Gaano kaepektibo ang mga research facilities para sa community studies?", "Tinatugunan ba ng programa ang mga kasalukuyang hamon sa pamamahala?", "Gaano ang pagkakaisa ng civic engagement sa mga kurso?", "Ano ang iyong pangkalahatang kasiyahan sa programa ng CPACD?"], group: ["Paano sinuri ng inyong grupo ang kahusayan ng pagsasanay sa public administration?", "Anong mga community development projects ang sa tingin ng inyong grupo ay dapat unahin?", "Gaano nararamdaman ng inyong grupo na naihanda ng curriculum ang mga estudyante para sa serbisyo sa lokal na pamahalaan?", "Sapat ba ang mga internship opportunities para sa career development ng inyong grupo?", "Paano i-rate ng inyong grupo ang kadalubhasaan ng faculty sa public policy?", "Anong mga skills ang sa tingin ng inyong grupo ay dapat bigyang-diin sa public administration?", "Gaano epektibo sa tingin ng inyong grupo ang mga research facilities para sa community studies?", "Nararamdaman ba ng inyong grupo na tinutugunan ng programa ang mga hamon sa pamamahala?", "Gaano sa tingin ng inyong grupo ang pagkakaisa ng civic engagement sa mga kurso?", "Ano ang pangkalahatang kasiyahan ng inyong grupo sa programa ng CPACD?"] }
+      },
+      "CBEHM": {
+        en: { individual: ["How do you personally evaluate the business curriculum's relevance to current market trends?", "What specific improvements would you suggest for the hospitality management training?", "How well do you feel the economics courses prepare you for real-world applications?", "Are the business simulation tools adequate for your learning needs?", "How would you personally rate the quality of business faculty mentorship?", "What entrepreneurial skills do you personally think should be emphasized?", "How effective do you find the industry partnerships for internships?", "Do you personally feel the program develops strong leadership capabilities?", "How well do you think financial literacy is integrated into your courses?", "What is your personal overall satisfaction with the CBEHM program?"], random: ["How relevant is the business curriculum to current market trends?", "What improvements can be made to hospitality management training?", "How well do economics courses prepare you for real-world applications?", "Are the business simulation tools adequate for learning needs?", "How would you rate the quality of business faculty mentorship?", "What entrepreneurial skills should be emphasized?", "How effective are the industry partnerships for internships?", "Does the program develop strong leadership capabilities?", "How well is financial literacy integrated into the courses?", "What is your overall satisfaction with the CBEHM program?"], group: ["How does your group evaluate the business curriculum's relevance to market trends?", "What specific improvements would your group suggest for hospitality management training?", "How well does your group feel economics courses prepare students for real-world applications?", "Are the business simulation tools adequate for your group's learning needs?", "How would your group rate the quality of business faculty mentorship?", "What entrepreneurial skills does your group think should be emphasized?", "How effective does your group find the industry partnerships for internships?", "Does your group feel the program develops strong leadership capabilities?", "How well does your group think financial literacy is integrated into the courses?", "What is your group's overall satisfaction with the CBEHM program?"] },
+        tl: { individual: ["Paano mo personal na sinusuri ang kaugnayan ng business curriculum sa mga kasalukuyang trend sa merkado?", "Anong mga tiyak na pagpapabuti ang iyong imumungkahi para sa hospitality management training?", "Gaano mo nararamdaman na naihanda ka ng economics courses para sa mga real-world application?", "Sapat ba ang mga business simulation tools para sa iyong pangangailangan sa pag-aaral?", "Paano mo personal na i-rate ang kalidad ng mentorship ng business faculty?", "Anong mga entrepreneurial skills ang sa tingin mo ay dapat bigyang-diin?", "Gaano mo epektibo ang mga industry partnerships para sa mga internship?", "Sa tingin mo ba ay binubuo ng programa ang matatag na kakayahan sa pamumuno?", "Gaano mo sa tingin ang pagkakaisa ng financial literacy sa iyong mga kurso?", "Ano ang iyong personal na pangkalahatang kasiyahan sa programa ng CBEHM?"], random: ["Gaano kaugnay ang business curriculum sa mga kasalukuyang trend sa merkado?", "Anong mga pagpapabuti ang maaaring gawin sa hospitality management training?", "Gaano kahusay ang paghahanda ng economics courses para sa real-world applications?", "Sapat ba ang mga business simulation tools para sa pangangailangan sa pag-aaral?", "Paano mo i-rate ang kalidad ng mentorship ng business faculty?", "Anong mga entrepreneurial skills ang dapat bigyang-diin?", "Gaano kaepektibo ang mga industry partnerships para sa mga internship?", "Binubuo ba ng programa ang matatag na kakayahan sa pamumuno?", "Gaano ang pagkakaisa ng financial literacy sa mga kurso?", "Ano ang iyong pangkalahatang kasiyahan sa programa ng CBEHM?"], group: ["Paano sinuri ng inyong grupo ang kaugnayan ng business curriculum sa mga trend sa merkado?", "Anong mga tiyak na pagpapabuti ang imumungkahi ng inyong grupo para sa hospitality management training?", "Gaano nararamdaman ng inyong grupo na naihanda ng economics courses ang mga estudyante para sa real-world applications?", "Sapat ba ang mga business simulation tools para sa pangangailangan ng inyong grupo sa pag-aaral?", "Paano i-rate ng inyong grupo ang kalidad ng mentorship ng business faculty?", "Anong mga entrepreneurial skills ang sa tingin ng inyong grupo ay dapat bigyang-diin?", "Gaano epektibo sa tingin ng inyong grupo ang mga industry partnerships para sa mga internship?", "Nararamdaman ba ng inyong grupo na binubuo ng programa ang kakayahan sa pamumuno?", "Gaano sa tingin ng inyong grupo ang pagkakaisa ng financial literacy sa mga kurso?", "Ano ang pangkalahatang kasiyahan ng inyong grupo sa programa ng CBEHM?"] }
+      },
+      "CRIMINOLOGY": {
+        en: { individual: ["How do you personally evaluate the criminology curriculum's coverage of modern crime trends?", "What specific improvements would you suggest for forensic science training?", "How well do you feel the program prepares you for law enforcement careers?", "Are the laboratory facilities adequate for crime investigation training?", "How would you personally rate the faculty's expertise in criminal justice?", "What skills do you personally think should be emphasized in criminology studies?", "How effective do you find the field training and internship programs?", "Do you personally feel the program addresses contemporary security challenges?", "How well do you think ethical standards are integrated into your courses?", "What is your personal overall satisfaction with the Criminology program?"], random: ["How well does the criminology curriculum cover modern crime trends?", "What improvements can be made to forensic science training?", "How well does the program prepare you for law enforcement careers?", "Are the laboratory facilities adequate for crime investigation training?", "How would you rate the faculty's expertise in criminal justice?", "What skills should be emphasized in criminology studies?", "How effective are the field training and internship programs?", "Does the program address contemporary security challenges?", "How well are ethical standards integrated into the courses?", "What is your overall satisfaction with the Criminology program?"], group: ["How does your group evaluate the criminology curriculum's coverage of modern crime trends?", "What specific improvements would your group suggest for forensic science training?", "How well does your group feel the program prepares students for law enforcement careers?", "Are the laboratory facilities adequate for your group's crime investigation training?", "How would your group rate the faculty's expertise in criminal justice?", "What skills does your group think should be emphasized in criminology studies?", "How effective does your group find the field training and internship programs?", "Does your group feel the program addresses contemporary security challenges?", "How well does your group think ethical standards are integrated into the courses?", "What is your group's overall satisfaction with the Criminology program?"] },
+        tl: { individual: ["Paano mo personal na sinusuri ang saklaw ng criminology curriculum sa mga modernong trend ng krimen?", "Anong mga tiyak na pagpapabuti ang iyong imumungkahi para sa forensic science training?", "Gaano mo nararamdaman na naihanda ka ng programa para sa mga karera sa law enforcement?", "Sapat ba ang mga laboratory facilities para sa crime investigation training?", "Paano mo personal na i-rate ang kadalubhasaan ng faculty sa criminal justice?", "Anong mga skills ang sa tingin mo ay dapat bigyang-diin sa pag-aaral ng criminology?", "Gaano mo epektibo ang field training at mga internship programs?", "Sa tingin mo ba ay tinutugunan ng programa ang mga kasalukuyang hamon sa seguridad?", "Gaano mo sa tingin ang pagkakaisa ng mga ethical standards sa iyong mga kurso?", "Ano ang iyong personal na pangkalahatang kasiyahan sa programa ng Criminology?"], random: ["Gaano saklaw ng criminology curriculum ang mga modernong trend ng krimen?", "Anong mga pagpapabuti ang maaaring gawin sa forensic science training?", "Gaano kahusay ang paghahanda ng programa para sa mga karera sa law enforcement?", "Sapat ba ang mga laboratory facilities para sa crime investigation training?", "Paano mo i-rate ang kadalubhasaan ng faculty sa criminal justice?", "Anong mga skills ang dapat bigyang-diin sa pag-aaral ng criminology?", "Gaano kaepektibo ang field training at mga internship programs?", "Tinatugunan ba ng programa ang mga kasalukuyang hamon sa seguridad?", "Gaano ang pagkakaisa ng mga ethical standards sa mga kurso?", "Ano ang iyong pangkalahatang kasiyahan sa programa ng Criminology?"], group: ["Paano sinuri ng inyong grupo ang saklaw ng criminology curriculum sa mga modernong trend ng krimen?", "Anong mga tiyak na pagpapabuti ang imumungkahi ng inyong grupo para sa forensic science training?", "Gaano nararamdaman ng inyong grupo na naihanda ng programa ang mga estudyante para sa law enforcement?", "Sapat ba ang mga laboratory facilities para sa crime investigation training ng inyong grupo?", "Paano i-rate ng inyong grupo ang kadalubhasaan ng faculty sa criminal justice?", "Anong mga skills ang sa tingin ng inyong grupo ay dapat bigyang-diin sa criminology?", "Gaano epektibo sa tingin ng inyong grupo ang field training at mga internship programs?", "Nararamdaman ba ng inyong grupo na tinutugunan ng programa ang mga hamon sa seguridad?", "Gaano sa tingin ng inyong grupo ang pagkakaisa ng mga ethical standards sa mga kurso?", "Ano ang pangkalahatang kasiyahan ng inyong grupo sa programa ng Criminology?"] }
+      },
+      "CET": {
+        en: { individual: ["How do you personally evaluate the engineering curriculum's alignment with industry needs?", "What specific improvements would you suggest for the laboratory equipment?", "How well do you feel the program prepares you for engineering licensure exams?", "Are the workshop facilities adequate for your hands-on training?", "How would you personally rate the faculty's technical expertise?", "What engineering software tools do you personally think should be added?", "How effective do you find the industry immersion programs?", "Do you personally feel the program develops strong problem-solving skills?", "How well do you think safety protocols are integrated into your courses?", "What is your personal overall satisfaction with the CET program?"], random: ["How well does the engineering curriculum align with industry needs?", "What improvements can be made to the laboratory equipment?", "How well does the program prepare you for engineering licensure exams?", "Are the workshop facilities adequate for hands-on training?", "How would you rate the faculty's technical expertise?", "What engineering software tools should be added?", "How effective are the industry immersion programs?", "Does the program develop strong problem-solving skills?", "How well are safety protocols integrated into the courses?", "What is your overall satisfaction with the CET program?"], group: ["How does your group evaluate the engineering curriculum's alignment with industry needs?", "What specific improvements would your group suggest for laboratory equipment?", "How well does your group feel the program prepares students for engineering licensure exams?", "Are the workshop facilities adequate for your group's hands-on training?", "How would your group rate the faculty's technical expertise?", "What engineering software tools does your group think should be added?", "How effective does your group find the industry immersion programs?", "Does your group feel the program develops strong problem-solving skills?", "How well does your group think safety protocols are integrated into the courses?", "What is your group's overall satisfaction with the CET program?"] },
+        tl: { individual: ["Paano mo personal na sinusuri ang pagkahanay ng engineering curriculum sa mga pangangailangan ng industriya?", "Anong mga tiyak na pagpapabuti ang iyong imumungkahi para sa mga laboratory equipment?", "Gaano mo nararamdaman na naihanda ka ng programa para sa engineering licensure exams?", "Sapat ba ang mga workshop facilities para sa iyong hands-on training?", "Paano mo personal na i-rate ang teknikal na kadalubhasaan ng faculty?", "Anong mga engineering software tools ang sa tingin mo ay dapat idagdag?", "Gaano mo epektibo ang mga industry immersion programs?", "Sa tingin mo ba ay binubuo ng programa ang matatag na problem-solving skills?", "Gaano mo sa tingin ang pagkakaisa ng mga safety protocols sa iyong mga kurso?", "Ano ang iyong personal na pangkalahatang kasiyahan sa programa ng CET?"], random: ["Gaano nahahanay ang engineering curriculum sa mga pangangailangan ng industriya?", "Anong mga pagpapabuti ang maaaring gawin sa mga laboratory equipment?", "Gaano kahusay ang paghahanda ng programa para sa engineering licensure exams?", "Sapat ba ang mga workshop facilities para sa hands-on training?", "Paano mo i-rate ang teknikal na kadalubhasaan ng faculty?", "Anong mga engineering software tools ang dapat idagdag?", "Gaano kaepektibo ang mga industry immersion programs?", "Binubuo ba ng programa ang matatag na problem-solving skills?", "Gaano ang pagkakaisa ng mga safety protocols sa mga kurso?", "Ano ang iyong pangkalahatang kasiyahan sa programa ng CET?"], group: ["Paano sinuri ng inyong grupo ang pagkahanay ng engineering curriculum sa mga pangangailangan ng industriya?", "Anong mga tiyak na pagpapabuti ang imumungkahi ng inyong grupo para sa laboratory equipment?", "Gaano nararamdaman ng inyong grupo na naihanda ng programa ang mga estudyante para sa engineering licensure exams?", "Sapat ba ang mga workshop facilities para sa hands-on training ng inyong grupo?", "Paano i-rate ng inyong grupo ang teknikal na kadalubhasaan ng faculty?", "Anong mga engineering software tools ang sa tingin ng inyong grupo ay dapat idagdag?", "Gaano epektibo sa tingin ng inyong grupo ang mga industry immersion programs?", "Nararamdaman ba ng inyong grupo na binubuo ng programa ang problem-solving skills?", "Gaano sa tingin ng inyong grupo ang pagkakaisa ng mga safety protocols sa mga kurso?", "Ano ang pangkalahatang kasiyahan ng inyong grupo sa programa ng CET?"] }
+      },
+      "CAFES": {
+        en: { individual: ["How do you personally evaluate the agriculture curriculum's relevance to modern farming?", "What specific improvements would you suggest for the fisheries laboratory?", "How well do you feel the program prepares you for sustainable agriculture practices?", "Are the farm facilities adequate for your practical training needs?", "How would you personally rate the faculty's expertise in environmental sciences?", "What agricultural technologies do you personally think should be integrated?", "How effective do you find the field extension programs?", "Do you personally feel the program addresses climate change challenges?", "How well do you think food security concepts are integrated into your courses?", "What is your personal overall satisfaction with the CAFES program?"], random: ["How relevant is the agriculture curriculum to modern farming?", "What improvements can be made to the fisheries laboratory?", "How well does the program prepare you for sustainable agriculture practices?", "Are the farm facilities adequate for practical training needs?", "How would you rate the faculty's expertise in environmental sciences?", "What agricultural technologies should be integrated?", "How effective are the field extension programs?", "Does the program address climate change challenges?", "How well are food security concepts integrated into the courses?", "What is your overall satisfaction with the CAFES program?"], group: ["How does your group evaluate the agriculture curriculum's relevance to modern farming?", "What specific improvements would your group suggest for the fisheries laboratory?", "How well does your group feel the program prepares students for sustainable agriculture?", "Are the farm facilities adequate for your group's practical training needs?", "How would your group rate the faculty's expertise in environmental sciences?", "What agricultural technologies does your group think should be integrated?", "How effective does your group find the field extension programs?", "Does your group feel the program addresses climate change challenges?", "How well does your group think food security concepts are integrated into the courses?", "What is your group's overall satisfaction with the CAFES program?"] },
+        tl: { individual: ["Paano mo personal na sinusuri ang kaugnayan ng agriculture curriculum sa modernong pagsasaka?", "Anong mga tiyak na pagpapabuti ang iyong imumungkahi para sa fisheries laboratory?", "Gaano mo nararamdaman na naihanda ka ng programa para sa sustainable agriculture practices?", "Sapat ba ang mga farm facilities para sa iyong practical training needs?", "Paano mo personal na i-rate ang kadalubhasaan ng faculty sa environmental sciences?", "Anong mga agricultural technologies ang sa tingin mo ay dapat isama?", "Gaano mo epektibo ang mga field extension programs?", "Sa tingin mo ba ay tinutugunan ng programa ang mga hamon ng climate change?", "Gaano mo sa tingin ang pagkakaisa ng food security concepts sa iyong mga kurso?", "Ano ang iyong personal na pangkalahatang kasiyahan sa programa ng CAFES?"], random: ["Gaano kaugnay ang agriculture curriculum sa modernong pagsasaka?", "Anong mga pagpapabuti ang maaaring gawin sa fisheries laboratory?", "Gaano kahusay ang paghahanda ng programa para sa sustainable agriculture practices?", "Sapat ba ang mga farm facilities para sa practical training needs?", "Paano mo i-rate ang kadalubhasaan ng faculty sa environmental sciences?", "Anong mga agricultural technologies ang dapat isama?", "Gaano kaepektibo ang mga field extension programs?", "Tinatugunan ba ng programa ang mga hamon ng climate change?", "Gaano ang pagkakaisa ng food security concepts sa mga kurso?", "Ano ang iyong pangkalahatang kasiyahan sa programa ng CAFES?"], group: ["Paano sinuri ng inyong grupo ang kaugnayan ng agriculture curriculum sa modernong pagsasaka?", "Anong mga tiyak na pagpapabuti ang imumungkahi ng inyong grupo para sa fisheries laboratory?", "Gaano nararamdaman ng inyong grupo na naihanda ng programa ang mga estudyante para sa sustainable agriculture?", "Sapat ba ang mga farm facilities para sa practical training needs ng inyong grupo?", "Paano i-rate ng inyong grupo ang kadalubhasaan ng faculty sa environmental sciences?", "Anong mga agricultural technologies ang sa tingin ng inyong grupo ay dapat isama?", "Gaano epektibo sa tingin ng inyong grupo ang mga field extension programs?", "Nararamdaman ba ng inyong grupo na tinutugunan ng programa ang mga hamon ng climate change?", "Gaano sa tingin ng inyong grupo ang pagkakaisa ng food security concepts sa mga kurso?", "Ano ang pangkalahatang kasiyahan ng inyong grupo sa programa ng CAFES?"] }
+      },
+      "CFINS": {
+        en: { individual: ["How do you personally evaluate the finance curriculum's relevance to current markets?", "What specific improvements would you suggest for the financial analysis training?", "How well do you feel the program prepares you for financial certifications?", "Are the trading simulation platforms adequate for your learning needs?", "How would you personally rate the faculty's expertise in financial markets?", "What financial technologies do you personally think should be integrated?", "How effective do you find the industry partnerships for internships?", "Do you personally feel the program develops strong analytical skills?", "How well do you think risk management concepts are integrated into your courses?", "What is your personal overall satisfaction with the CFINS program?"], random: ["How relevant is the finance curriculum to current markets?", "What improvements can be made to financial analysis training?", "How well does the program prepare you for financial certifications?", "Are the trading simulation platforms adequate for learning needs?", "How would you rate the faculty's expertise in financial markets?", "What financial technologies should be integrated?", "How effective are the industry partnerships for internships?", "Does the program develop strong analytical skills?", "How well are risk management concepts integrated into the courses?", "What is your overall satisfaction with the CFINS program?"], group: ["How does your group evaluate the finance curriculum's relevance to current markets?", "What specific improvements would your group suggest for financial analysis training?", "How well does your group feel the program prepares students for financial certifications?", "Are the trading simulation platforms adequate for your group's learning needs?", "How would your group rate the faculty's expertise in financial markets?", "What financial technologies does your group think should be integrated?", "How effective does your group find the industry partnerships for internships?", "Does your group feel the program develops strong analytical skills?", "How well does your group think risk management concepts are integrated into the courses?", "What is your group's overall satisfaction with the CFINS program?"] },
+        tl: { individual: ["Paano mo personal na sinusuri ang kaugnayan ng finance curriculum sa mga kasalukuyang merkado?", "Anong mga tiyak na pagpapabuti ang iyong imumungkahi para sa financial analysis training?", "Gaano mo nararamdaman na naihanda ka ng programa para sa mga financial certifications?", "Sapat ba ang mga trading simulation platforms para sa iyong pangangailangan sa pag-aaral?", "Paano mo personal na i-rate ang kadalubhasaan ng faculty sa financial markets?", "Anong mga financial technologies ang sa tingin mo ay dapat isama?", "Gaano mo epektibo ang mga industry partnerships para sa mga internship?", "Sa tingin mo ba ay binubuo ng programa ang matatag na analytical skills?", "Gaano mo sa tingin ang pagkakaisa ng risk management concepts sa iyong mga kurso?", "Ano ang iyong personal na pangkalahatang kasiyahan sa programa ng CFINS?"], random: ["Gaano kaugnay ang finance curriculum sa mga kasalukuyang merkado?", "Anong mga pagpapabuti ang maaaring gawin sa financial analysis training?", "Gaano kahusay ang paghahanda ng programa para sa mga financial certifications?", "Sapat ba ang mga trading simulation platforms para sa pangangailangan sa pag-aaral?", "Paano mo i-rate ang kadalubhasaan ng faculty sa financial markets?", "Anong mga financial technologies ang dapat isama?", "Gaano kaepektibo ang mga industry partnerships para sa mga internship?", "Binubuo ba ng programa ang matatag na analytical skills?", "Gaano ang pagkakaisa ng risk management concepts sa mga kurso?", "Ano ang iyong pangkalahatang kasiyahan sa programa ng CFINS?"], group: ["Paano sinuri ng inyong grupo ang kaugnayan ng finance curriculum sa mga kasalukuyang merkado?", "Anong mga tiyak na pagpapabuti ang imumungkahi ng inyong grupo para sa financial analysis training?", "Gaano nararamdaman ng inyong grupo na naihanda ng programa ang mga estudyante para sa financial certifications?", "Sapat ba ang mga trading simulation platforms para sa pangangailangan ng inyong grupo sa pag-aaral?", "Paano i-rate ng inyong grupo ang kadalubhasaan ng faculty sa financial markets?", "Anong mga financial technologies ang sa tingin ng inyong grupo ay dapat isama?", "Gaano epektibo sa tingin ng inyong grupo ang mga industry partnerships para sa mga internship?", "Nararamdaman ba ng inyong grupo na binubuo ng programa ang analytical skills?", "Gaano sa tingin ng inyong grupo ang pagkakaisa ng risk management concepts sa mga kurso?", "Ano ang pangkalahatang kasiyahan ng inyong grupo sa programa ng CFINS?"] }
+      },
+      "CED": {
+        en: { individual: ["How do you personally evaluate the education curriculum's alignment with DepEd standards?", "What specific improvements would you suggest for the teaching practicum?", "How well do you feel the program prepares you for the Licensure Examination for Teachers?", "Are the demonstration classrooms adequate for your teaching practice?", "How would you personally rate the faculty's expertise in pedagogy?", "What educational technologies do you personally think should be integrated?", "How effective do you find the community immersion programs?", "Do you personally feel the program develops strong classroom management skills?", "How well do you think inclusive education concepts are integrated into your courses?", "What is your personal overall satisfaction with the CED program?"], random: ["How well does the education curriculum align with DepEd standards?", "What improvements can be made to the teaching practicum?", "How well does the program prepare you for the Licensure Examination for Teachers?", "Are the demonstration classrooms adequate for teaching practice?", "How would you rate the faculty's expertise in pedagogy?", "What educational technologies should be integrated?", "How effective are the community immersion programs?", "Does the program develop strong classroom management skills?", "How well are inclusive education concepts integrated into the courses?", "What is your overall satisfaction with the CED program?"], group: ["How does your group evaluate the education curriculum's alignment with DepEd standards?", "What specific improvements would your group suggest for the teaching practicum?", "How well does your group feel the program prepares students for the LET?", "Are the demonstration classrooms adequate for your group's teaching practice?", "How would your group rate the faculty's expertise in pedagogy?", "What educational technologies does your group think should be integrated?", "How effective does your group find the community immersion programs?", "Does your group feel the program develops strong classroom management skills?", "How well does your group think inclusive education concepts are integrated into the courses?", "What is your group's overall satisfaction with the CED program?"] },
+        tl: { individual: ["Paano mo personal na sinusuri ang pagkahanay ng education curriculum sa mga pamantayan ng DepEd?", "Anong mga tiyak na pagpapabuti ang iyong imumungkahi para sa teaching practicum?", "Gaano mo nararamdaman na naihanda ka ng programa para sa Licensure Examination for Teachers?", "Sapat ba ang mga demonstration classrooms para sa iyong teaching practice?", "Paano mo personal na i-rate ang kadalubhasaan ng faculty sa pedagogy?", "Anong mga educational technologies ang sa tingin mo ay dapat isama?", "Gaano mo epektibo ang mga community immersion programs?", "Sa tingin mo ba ay binubuo ng programa ang matatag na classroom management skills?", "Gaano mo sa tingin ang pagkakaisa ng inclusive education concepts sa iyong mga kurso?", "Ano ang iyong personal na pangkalahatang kasiyahan sa programa ng CED?"], random: ["Gaano nahahanay ang education curriculum sa mga pamantayan ng DepEd?", "Anong mga pagpapabuti ang maaaring gawin sa teaching practicum?", "Gaano kahusay ang paghahanda ng programa para sa Licensure Examination for Teachers?", "Sapat ba ang mga demonstration classrooms para sa teaching practice?", "Paano mo i-rate ang kadalubhasaan ng faculty sa pedagogy?", "Anong mga educational technologies ang dapat isama?", "Gaano kaepektibo ang mga community immersion programs?", "Binubuo ba ng programa ang matatag na classroom management skills?", "Gaano ang pagkakaisa ng inclusive education concepts sa mga kurso?", "Ano ang iyong pangkalahatang kasiyahan sa programa ng CED?"], group: ["Paano sinuri ng inyong grupo ang pagkahanay ng education curriculum sa mga pamantayan ng DepEd?", "Anong mga tiyak na pagpapabuti ang imumungkahi ng inyong grupo para sa teaching practicum?", "Gaano nararamdaman ng inyong grupo na naihanda ng programa ang mga estudyante para sa LET?", "Sapat ba ang mga demonstration classrooms para sa teaching practice ng inyong grupo?", "Paano i-rate ng inyong grupo ang kadalubhasaan ng faculty sa pedagogy?", "Anong mga educational technologies ang sa tingin ng inyong grupo ay dapat isama?", "Gaano epektibo sa tingin ng inyong grupo ang mga community immersion programs?", "Nararamdaman ba ng inyong grupo na binubuo ng programa ang classroom management skills?", "Gaano sa tingin ng inyong grupo ang pagkakaisa ng inclusive education concepts sa mga kurso?", "Ano ang pangkalahatang kasiyahan ng inyong grupo sa programa ng CED?"] }
+      }
+    };
+
+    function analyzeAnswer(answer) {
+      const len = answer.trim().length;
+      if (len === 0) return { score: 0, category: 'Hindi nasagot', color: '#94a3b8' };
+      if (len >= 80) return { score: 100, category: 'Tama', color: '#10b981' };
+      if (len >= 40) return { score: 70, category: 'Katamtaman', color: '#f59e0b' };
+      return { score: 30, category: 'Mali', color: '#f43f5e' };
+    }
+
+    function getRandom10Questions(selectedCourse, questionMode, lang = 'en') {
+      const courseBank = courseQuestionBank[selectedCourse] || courseQuestionBank["CCAS"];
+      const langBank = courseBank[lang] || courseBank.en;
+      const questionsForMode = langBank[questionMode] || langBank.individual;
+      const shuffled = [...questionsForMode].sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, 10);
+    }
+
+    function switchLanguage(lang) {
+      currentLanguage = lang;
+      const enBtn = document.getElementById('lang-en-btn');
+      const tlBtn = document.getElementById('lang-tl-btn');
+      const langDisplay = document.getElementById('current-lang-display');
+      
+      if (lang === 'en') {
+        enBtn.classList.add('active');
+        enBtn.classList.remove('bg-white', 'text-slate-600');
+        tlBtn.classList.remove('active');
+        tlBtn.classList.add('bg-white', 'text-slate-600');
+        langDisplay.innerText = 'Current: English';
+      } else {
+        tlBtn.classList.add('active');
+        tlBtn.classList.remove('bg-white', 'text-slate-600');
+        enBtn.classList.remove('active');
+        enBtn.classList.add('bg-white', 'text-slate-600');
+        langDisplay.innerText = 'Kasalukuyan: Tagalog';
+      }
+
+      if (currentQuestions.length > 0) {
+        const selectedCourse = document.getElementById('respondent-course').value;
+        if (selectedCourse) {
+          currentQuestions = getRandom10Questions(selectedCourse, currentQuestionMode, currentLanguage);
+          renderSingleQuestion();
+        }
+      }
+    }
+
+    function updateAnalytics() {
+      try {
+        const respondentsWithAnswers = respondentDatabase.filter(r => {
+          if (!r.answers) return false;
+          return Object.values(r.answers).some(answer => answer && answer.trim().length > 0);
+        });
+
+        const totalRespondents = respondentsWithAnswers.length;
+        
+        if (totalRespondents === 0) {
+          document.getElementById('analytics-empty-state').classList.remove('hidden');
+          document.getElementById('analytics-content').classList.add('hidden');
+          document.getElementById('active-surveys-count').innerText = '0';
+          if (analyticsChart) { analyticsChart.destroy(); analyticsChart = null; }
+          return;
+        }
+
+        document.getElementById('analytics-empty-state').classList.add('hidden');
+        document.getElementById('analytics-content').classList.remove('hidden');
+
+        let structuredCount = 0, semiStructuredCount = 0, unstructuredCount = 0, totalScore = 0;
+        const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        
+        const dayStats = {
+          'Monday': { correct: 0, moderate: 0, incorrect: 0, unanswered: 0, total: 0 },
+          'Tuesday': { correct: 0, moderate: 0, incorrect: 0, unanswered: 0, total: 0 },
+          'Wednesday': { correct: 0, moderate: 0, incorrect: 0, unanswered: 0, total: 0 },
+          'Thursday': { correct: 0, moderate: 0, incorrect: 0, unanswered: 0, total: 0 },
+          'Friday': { correct: 0, moderate: 0, incorrect: 0, unanswered: 0, total: 0 },
+          'Saturday': { correct: 0, moderate: 0, incorrect: 0, unanswered: 0, total: 0 },
+          'Sunday': { correct: 0, moderate: 0, incorrect: 0, unanswered: 0, total: 0 }
+        };
+
+        respondentsWithAnswers.forEach(r => {
+          if (r.type === 'Direct Instructor') structuredCount++;
+          else if (r.type === 'Semi-Direct Instructor') semiStructuredCount++;
+          else unstructuredCount++;
+
+          let dayName = null;
+          if (r.dateSubmitted) {
+            const dateParts = r.dateSubmitted.split('-');
+            const date = new Date(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]));
+            dayName = daysOfWeek[date.getDay()];
+          }
+
+          if (r.answers) {
+            Object.values(r.answers).forEach(answer => {
+              const analysis = analyzeAnswer(answer);
+              totalScore += analysis.score;
+              
+              if (dayName && dayStats[dayName]) {
+                dayStats[dayName].total++;
+                if (analysis.score === 100) dayStats[dayName].correct++;
+                else if (analysis.score === 70) dayStats[dayName].moderate++;
+                else if (analysis.score === 30) dayStats[dayName].incorrect++;
+                else dayStats[dayName].unanswered++;
+              }
+            });
+          }
+        });
+
+        const structuredPercentage = Math.round((structuredCount / totalRespondents) * 100) || 0;
+        const semiStructuredPercentage = Math.round((semiStructuredCount / totalRespondents) * 100) || 0;
+        const unstructuredPercentage = Math.round((unstructuredCount / totalRespondents) * 100) || 0;
+
+        document.getElementById('structured-count').innerText = `${structuredCount} Responses`;
+        document.getElementById('structured-percentage').innerText = `${structuredPercentage}%`;
+        document.getElementById('semi-structured-count').innerText = `${semiStructuredCount} Responses`;
+        document.getElementById('semi-structured-percentage').innerText = `${semiStructuredPercentage}%`;
+        document.getElementById('unstructured-count').innerText = `${unstructuredCount} Responses`;
+        document.getElementById('unstructured-percentage').innerText = `${unstructuredPercentage}%`;
+
+        const activeDaysCount = Object.values(dayStats).filter(stats => stats.total > 0).length;
+        document.getElementById('active-surveys-count').innerText = activeDaysCount;
+
+        updateAnalyticsChart(dayStats);
+        updateSentimentAnalysis(totalScore, totalRespondents);
+      } catch (e) {
+        console.error('Error in updateAnalytics:', e);
+      }
+    }
+
+    function updateAnalyticsChart(dayStats) {
+      const ctx = document.getElementById('analyticsChart');
+      if (!ctx) return;
+      if (analyticsChart) analyticsChart.destroy();
+
+      const labels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+      
+      const correctData = labels.map(day => {
+        const stats = dayStats[day];
+        if (stats.total === 0) return 0;
+        return Math.round((stats.correct / stats.total) * 100);
+      });
+      
+      const moderateData = labels.map(day => {
+        const stats = dayStats[day];
+        if (stats.total === 0) return 0;
+        return Math.round((stats.moderate / stats.total) * 100);
+      });
+      
+      const incorrectData = labels.map(day => {
+        const stats = dayStats[day];
+        if (stats.total === 0) return 0;
+        return Math.round((stats.incorrect / stats.total) * 100);
+      });
+      
+      const unansweredData = labels.map(day => {
+        const stats = dayStats[day];
+        if (stats.total === 0) return 0;
+        return Math.round((stats.unanswered / stats.total) * 100);
+      });
+
+      analyticsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Tama (Correct)',
+              data: correctData,
+              borderColor: '#10b981',
+              backgroundColor: 'rgba(16, 185, 129, 0.1)',
+              borderWidth: 2,
+              pointBackgroundColor: '#10b981',
+              pointRadius: 4,
+              pointHoverRadius: 6,
+              tension: 0.3,
+              fill: false
+            },
+            {
+              label: 'Katamtaman (Moderate)',
+              data: moderateData,
+              borderColor: '#f59e0b',
+              backgroundColor: 'rgba(245, 158, 11, 0.1)',
+              borderWidth: 2,
+              pointBackgroundColor: '#f59e0b',
+              pointRadius: 4,
+              pointHoverRadius: 6,
+              tension: 0.3,
+              fill: false
+            },
+            {
+              label: 'Mali (Incorrect)',
+              data: incorrectData,
+              borderColor: '#f43f5e',
+              backgroundColor: 'rgba(244, 63, 94, 0.1)',
+              borderWidth: 2,
+              pointBackgroundColor: '#f43f5e',
+              pointRadius: 4,
+              pointHoverRadius: 6,
+              tension: 0.3,
+              fill: false
+            },
+            {
+              label: 'Hindi Nasagot',
+              data: unansweredData,
+              borderColor: '#94a3b8',
+              backgroundColor: 'rgba(148, 163, 184, 0.1)',
+              borderWidth: 2,
+              pointBackgroundColor: '#94a3b8',
+              pointRadius: 4,
+              pointHoverRadius: 6,
+              tension: 0.3,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: {
+                font: { size: 10 },
+                padding: 10
+              }
+            },
+            tooltip: {
+              backgroundColor: '#133e48',
+              titleColor: '#ffffff',
+              bodyColor: '#ffffff',
+              borderColor: '#0d9488',
+              borderWidth: 1,
+              padding: 12,
+              callbacks: {
+                label: function(context) {
+                  const datasetLabel = context.dataset.label;
+                  const value = context.parsed.y;
+                  const dayName = labels[context.dataIndex];
+                  const stats = dayStats[dayName];
+                  let rawCount = 0;
+                  
+                  if (datasetLabel.includes('Tama')) rawCount = stats.correct;
+                  else if (datasetLabel.includes('Katamtaman')) rawCount = stats.moderate;
+                  else if (datasetLabel.includes('Mali')) rawCount = stats.incorrect;
+                  else rawCount = stats.unanswered;
+                  
+                  return `${datasetLabel}: ${value}% (${rawCount} answers)`;
+                },
+                afterBody: function(context) {
+                  const dayName = labels[context[0].dataIndex];
+                  const stats = dayStats[dayName];
+                  return [`\nTotal answers: ${stats.total}`];
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              border: { display: false }
+            },
+            y: {
+              beginAtZero: true,
+              max: 100,
+              grid: { color: '#f1f5f9' },
+              ticks: {
+                callback: function(value) {
+                  return value + '%';
+                }
+              },
+              border: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    function updateSentimentAnalysis(totalScore, totalRespondents) {
+      const avgScore = Math.round(totalScore / (totalRespondents * 10)) || 0;
+      document.getElementById('overall-sentiment').innerText = `${avgScore}% Positive`;
+
+      const keywords = [];
+      respondentDatabase.forEach(r => {
+        if (r.answers) {
+          Object.values(r.answers).forEach(answer => {
+            if (answer && answer.length > 20) {
+              const words = answer.split(' ').filter(w => w.length > 4);
+              keywords.push(...words.slice(0, 3));
+            }
+          });
+        }
+      });
+
+      const keywordCounts = {};
+      keywords.forEach(kw => {
+        const word = kw.toLowerCase();
+        if (!keywordCounts[word]) keywordCounts[word] = 0;
+        keywordCounts[word]++;
+      });
+
+      const topKeywords = Object.entries(keywordCounts).sort((a, b) => b[1] - a[1]).slice(0, 6);
+      const keywordsContainer = document.getElementById('sentiment-keywords');
+      keywordsContainer.innerHTML = topKeywords.map(([keyword, count]) => 
+        `<span class="px-2.5 py-1 bg-teal-50 text-teal-700 border border-teal-200 rounded-full font-medium">#${keyword} (${count})</span>`
+      ).join('');
+    }
+
+    function switchTab(tabId) {
+      const contents = document.querySelectorAll('.tab-content');
+      contents.forEach(c => c.classList.add('hidden'));
+      const selectedTab = document.getElementById('tab-' + tabId);
+      if (selectedTab) selectedTab.classList.remove('hidden');
+
+      const btns = document.querySelectorAll('.nav-btn');
+      btns.forEach(b => { b.classList.remove('bg-brand-accent', 'text-white'); b.classList.add('text-slate-300'); });
+      const activeBtn = document.getElementById('nav-' + tabId);
+      if (activeBtn) { activeBtn.classList.add('bg-brand-accent', 'text-white'); activeBtn.classList.remove('text-slate-300'); }
+
+      const titles = {
+        'analytics': '1. Survey Data Analytics',
+        'respondent': '8. Respondent Login & Questionnaire',
+        'database': '9. Respondent Database'
+      };
+      if (titles[tabId]) document.getElementById('page-title').innerText = titles[tabId];
+
+      if (tabId === 'database') renderDatabase();
+      else if (tabId === 'analytics') updateAnalytics();
+    }
+
+    function submitRespondentForm(e) {
+      e.preventDefault();
+      const selectedCourse = document.getElementById('respondent-course').value;
+      document.getElementById('respondent-form-message').innerText = "✓ Respondent details verified. Starting questionnaire.";
+      document.getElementById('respondent-form-message').className = "text-xs text-center font-bold text-emerald-600 mt-2";
+
+      currentQuestionMode = 'individual';
+      currentQuestions = getRandom10Questions(selectedCourse, currentQuestionMode, currentLanguage);
+      currentQuestionIndex = 0;
+      surveyAnswers = {};
+      renderSingleQuestion();
+    }
+
+    function randomizeQuestionsAgain() {
+      const selectedCourse = document.getElementById('respondent-course').value;
+      currentQuestions = getRandom10Questions(selectedCourse, currentQuestionMode, currentLanguage);
+      currentQuestionIndex = 0;
+      surveyAnswers = {};
+      renderSingleQuestion();
+    }
+
+    function changeQuestionMode(mode) {
+      const selectedCourse = document.getElementById('respondent-course').value;
+      currentQuestionMode = mode;
+      currentQuestions = getRandom10Questions(selectedCourse, mode, currentLanguage);
+      const questionTextEl = document.getElementById('question-text-current');
+      if (questionTextEl) questionTextEl.innerText = currentQuestions[currentQuestionIndex];
+    }
+
+    function showResponseAnalytics() {
+      const analyticsContainer = document.getElementById('response-analytics-container');
+      analyticsContainer.classList.remove('hidden');
+      const ctx = document.getElementById('responseChart');
+      if (!ctx) return;
+      if (responseChart) responseChart.destroy();
+
+      const labels = Array.from({length: 10}, (_, i) => `Q${i + 1}`);
+      const data = [], pointColors = [];
+      let correctCount = 0, moderateCount = 0, incorrectCount = 0, totalScore = 0;
+
+      for (let i = 0; i < 10; i++) {
+        const answer = surveyAnswers[i] || '';
+        const analysis = analyzeAnswer(answer);
+        data.push(analysis.score);
+        pointColors.push(analysis.color);
+        totalScore += analysis.score;
+        if (analysis.score === 100) correctCount++;
+        else if (analysis.score === 70) moderateCount++;
+        else if (analysis.score > 0) incorrectCount++;
+      }
+
+      const totalPercentage = Math.round(totalScore / 10);
+
+      responseChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Response Score (%)',
+            data: data,
+            borderColor: '#0d9488',
+            backgroundColor: 'rgba(13, 148, 136, 0.1)',
+            borderWidth: 3,
+            pointBackgroundColor: pointColors,
+            pointBorderColor: pointColors,
+            pointRadius: 8,
+            pointHoverRadius: 10,
+            tension: 0.3,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const score = context.parsed.y;
+                  let category = 'Hindi nasagot';
+                  if (score === 100) category = 'Tama';
+                  else if (score === 70) category = 'Katamtaman';
+                  else if (score === 30) category = 'Mali';
+                  return `Score: ${score}% (${category})`;
+                }
+              }
+            }
+          },
+          scales: {
+            y: { beginAtZero: true, max: 100, grid: { color: '#f1f5f9' }, ticks: { callback: function(value) { return value + '%'; } } },
+            x: { grid: { display: false } }
+          }
+        }
+      });
+
+      document.getElementById('total-percentage-display').innerText = totalPercentage + '%';
+      document.getElementById('total-percentage-display').className = `text-2xl font-extrabold ${totalPercentage >= 70 ? 'text-emerald-600' : totalPercentage >= 40 ? 'text-amber-600' : 'text-rose-600'}`;
+      document.getElementById('correct-count').innerText = correctCount;
+      document.getElementById('moderate-count').innerText = moderateCount;
+      document.getElementById('incorrect-count').innerText = incorrectCount;
+      analyticsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function renderSingleQuestion() {
+      document.getElementById('questions-placeholder').classList.add('hidden');
+      const listEl = document.getElementById('questions-list');
+      listEl.classList.remove('hidden');
+      document.getElementById('btn-re-randomize').classList.remove('hidden');
+      document.getElementById('completion-counter').classList.remove('hidden');
+      document.getElementById('final-submit-wrapper').classList.add('hidden');
+
+      const qNum = currentQuestionIndex + 1;
+      const isLast = qNum === 10;
+      const currentAnswer = surveyAnswers[currentQuestionIndex] || '';
+
+      let cardsHtml = `
+        <div class="q-card bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4 fade-in">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <span class="text-[11px] font-bold text-teal-700 bg-teal-50 px-2.5 py-0.5 rounded-full border border-teal-200">
+              Question ${qNum} of 10
+            </span>
+            <span id="badge-status-current" class="text-[10px] font-bold ${currentAnswer.length > 0 ? 'text-emerald-700 bg-emerald-50 border border-emerald-200' : 'text-slate-400 bg-slate-100'} px-2 py-0.5 rounded">
+              ${currentAnswer.length > 0 ? 'Answered' : 'Unanswered'}
+            </span>
+          </div>
+          <p id="question-text-current" class="text-sm font-bold text-slate-800 leading-relaxed">
+            ${currentQuestions[currentQuestionIndex]}
+          </p>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Your Answer:</label>
+            <textarea id="answer-input-current" rows="5" 
+                      oninput="onAnswerInputCurrent(this.value)"
+                      placeholder="Type your response here..." 
+                      class="w-full bg-slate-50 border border-slate-300 rounded-lg p-3 text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 transition resize-y">${currentAnswer}</textarea>
+          </div>
+          <div class="flex items-center justify-end gap-2 pt-2 flex-wrap">
+            <button type="button" onclick="changeQuestionMode('individual')" class="px-3 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 border border-blue-300 rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+              <i class="fa-solid fa-user"></i> Individual
+            </button>
+            <button type="button" onclick="changeQuestionMode('random')" class="px-3 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 border border-purple-300 rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+              <i class="fa-solid fa-shuffle"></i> Random
+            </button>
+            <button type="button" onclick="changeQuestionMode('group')" class="px-3 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700 border border-amber-300 rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+              <i class="fa-solid fa-users"></i> Group
+            </button>
+            <div class="w-px h-6 bg-slate-300 mx-1"></div>
+            <button type="button" onclick="${isLast ? 'submitSurveyAnswers()' : 'continueToNextQuestion()'}" 
+                    class="px-6 py-2 ${isLast ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-teal-600 hover:bg-teal-700'} text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+              <span>${isLast ? 'Submit Complete Questionnaire' : 'Continue'}</span>
+              <i class="fa-solid ${isLast ? 'fa-paper-plane' : 'fa-arrow-right'} text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+      `;
+
+      listEl.innerHTML = cardsHtml;
+      updateCompletionCounter();
+    }
+
+    function onAnswerInputCurrent(value) {
+      surveyAnswers[currentQuestionIndex] = value.trim();
+      const badge = document.getElementById('badge-status-current');
+      if (value.trim().length > 0) {
+        badge.innerText = "Answered";
+        badge.className = "text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200";
+      } else {
+        badge.innerText = "Unanswered";
+        badge.className = "text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded";
+      }
+      updateCompletionCounter();
+    }
+
+    function continueToNextQuestion() {
+      if (currentQuestionIndex < 9) {
+        currentQuestionIndex++;
+        renderSingleQuestion();
+      }
+    }
+
+    function updateCompletionCounter() {
+      let count = 0;
+      for (let i = 0; i < 10; i++) {
+        if (surveyAnswers[i] && surveyAnswers[i].length > 0) count++;
+      }
+      const counterEl = document.getElementById('completion-counter');
+      if (counterEl) counterEl.innerText = `${count} / 10 Answered`;
+    }
+
+    function submitSurveyAnswers() {
+      let count = 0;
+      for (let i = 0; i < 10; i++) {
+        if (surveyAnswers[i] && surveyAnswers[i].length > 0) count++;
+      }
+      if (count < 10) {
+        if (!confirm(`You have answered ${count} out of 10 questions. Would you like to submit anyway?`)) return;
+      }
+
+      const savedId = saveRespondentToDatabase();
+      
+      if (savedId) {
+        alert(`Success! Respondent #RES-${savedId} has been saved to the database. You can now view it in the Respondent Database tab.`);
+        showResponseAnalytics();
+        
+        document.getElementById('respondent-login-form').reset();
+        document.getElementById('questions-list').innerHTML = '';
+        document.getElementById('questions-list').classList.add('hidden');
+        document.getElementById('questions-placeholder').classList.remove('hidden');
+        document.getElementById('btn-re-randomize').classList.add('hidden');
+        document.getElementById('completion-counter').classList.add('hidden');
+        document.getElementById('final-submit-wrapper').classList.add('hidden');
+        document.getElementById('respondent-form-message').innerText = "";
+        document.getElementById('respondent-date').value = getLocalDate();
+        
+        currentQuestionIndex = 0;
+        surveyAnswers = {};
+        updateAnalytics();
+      } else {
+        alert("Failed to save. Please check console for errors or if your browser blocks local storage.");
+      }
+    }
+
+    function saveRespondentToDatabase() {
+      try {
+        const firstName = document.getElementById('respondent-first-name').value || "Unknown";
+        const lastName = document.getElementById('respondent-last-name').value || "Unknown";
+        const type = document.getElementById('respondent-type').value || "Not specified";
+        const questionType = document.getElementById('respondent-question-type').value || "Not specified";
+        const course = document.getElementById('respondent-course').value || "Not specified";
+        const date = document.getElementById('respondent-date').value || getLocalDate();
+
+        let answeredCount = 0;
+        for (let i = 0; i < 10; i++) {
+          if (surveyAnswers[i] && surveyAnswers[i].length > 0) answeredCount++;
+        }
+
+        const respondent = {
+          id: nextRespondentId,
+          firstName: firstName,
+          lastName: lastName,
+          fullName: `${firstName} ${lastName}`.trim(),
+          type: type,
+          questionType: questionType,
+          course: course,
+          language: currentLanguage,
+          answeredQuestions: answeredCount,
+          totalQuestions: 10,
+          dateSubmitted: date,
+          answers: {...surveyAnswers}
+        };
+
+        respondentDatabase.push(respondent);
+        const savedId = nextRespondentId;
+        nextRespondentId++;
+
+        try {
+          localStorage.setItem('respondentDatabase', JSON.stringify(respondentDatabase));
+          localStorage.setItem('nextRespondentId', nextRespondentId.toString());
+        } catch (e) {
+          console.error('Error saving to localStorage:', e);
+          alert("Warning: Browser blocked localStorage. Data is saved in memory only for this session.");
+        }
+
+        updateTotalSubmissions();
+        renderDatabase();
+        return savedId;
+      } catch (e) {
+        console.error("Error in saveRespondentToDatabase:", e);
+        alert("An error occurred while saving. Check console for details.");
+        return null;
+      }
+    }
+
+    function updateTotalSubmissions() {
+      const el = document.getElementById('total-submissions');
+      if (el) el.innerText = respondentDatabase.length;
+    }
+
+    function renderDatabase() {
+      try {
+        const tbody = document.getElementById('database-tbody');
+        const emptyMessage = document.getElementById('empty-database-message');
+        const searchInput = document.getElementById('database-search');
+        const filterSelect = document.getElementById('database-filter');
+        
+        const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+        const filterCourse = filterSelect ? filterSelect.value : '';
+
+        let filteredRespondents = respondentDatabase.filter(r => {
+          const fullName = (r.fullName || "").toLowerCase();
+          const course = (r.course || "").toLowerCase();
+          const idStr = (r.id || "").toString();
+          
+          const matchesSearch = !searchTerm || 
+            fullName.includes(searchTerm) ||
+            course.includes(searchTerm) ||
+            idStr.includes(searchTerm);
+            
+          const matchesFilter = !filterCourse || course.includes(filterCourse.toLowerCase());
+          return matchesSearch && matchesFilter;
+        });
+
+        if (filteredRespondents.length === 0) {
+          tbody.innerHTML = '';
+          emptyMessage.classList.remove('hidden');
+          return;
+        }
+
+        emptyMessage.classList.add('hidden');
+        tbody.innerHTML = filteredRespondents.map(r => `
+          <tr class="hover:bg-slate-50">
+            <td class="p-3 text-slate-400">#RES-${r.id}</td>
+            <td class="p-3 font-bold text-slate-800">${r.fullName || 'Unknown'}</td>
+            <td class="p-3"><span class="px-2 py-0.5 rounded bg-teal-50 text-teal-700 border border-teal-200">${r.type || 'N/A'}</span></td>
+            <td class="p-3">${r.course || 'N/A'} • ${r.questionType || 'N/A'} • ${r.language === 'tl' ? '🇵🇭' : '🇬🇧'}</td>
+            <td class="p-3"><span class="text-emerald-600 font-bold">${r.answeredQuestions || 0} / ${r.totalQuestions || 10}</span></td>
+            <td class="p-3 text-slate-500">${r.dateSubmitted || 'N/A'}</td>
+            <td class="p-3 text-right">
+              <div class="flex items-center justify-end gap-2">
+                <button onclick="viewRespondent(${r.id})" class="text-teal-600 hover:text-teal-800 font-bold text-xs">
+                  <i class="fa-solid fa-eye"></i> View
+                </button>
+                <button onclick="deleteRespondent(${r.id})" class="text-rose-600 hover:text-rose-800 font-bold text-xs">
+                  <i class="fa-solid fa-trash"></i> Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        console.error("Error in renderDatabase:", e);
+        alert("An error occurred while rendering the database. Check console for details.");
+      }
+    }
+
+    function deleteRespondent(id) {
+      const respondent = respondentDatabase.find(r => r.id === id);
+      if (!respondent) return;
+      const confirmed = confirm(`Are you sure you want to delete this respondent?\n\nName: ${respondent.fullName}\nCourse: ${respondent.course}\nQuestion Type: ${respondent.questionType || 'N/A'}\n\nThis action cannot be undone.`);
+      if (!confirmed) return;
+
+      respondentDatabase = respondentDatabase.filter(r => r.id !== id);
+      try { localStorage.setItem('respondentDatabase', JSON.stringify(respondentDatabase)); } catch (e) {}
+      updateTotalSubmissions();
+      renderDatabase();
+      updateAnalytics();
+      alert(`✓ Respondent "${respondent.fullName}" has been successfully deleted.`);
+    }
+
+    function clearAllDatabase() {
+      if (respondentDatabase.length === 0) { alert('The database is already empty.'); return; }
+      const confirmed = confirm(`Are you sure you want to DELETE ALL ${respondentDatabase.length} respondents from the database?\n\nThis action CANNOT be undone!`);
+      if (!confirmed) return;
+      const doubleConfirm = confirm('FINAL WARNING: This will permanently delete ALL records. Continue?');
+      if (!doubleConfirm) return;
+
+      respondentDatabase = [];
+      nextRespondentId = 1080;
+      try {
+        localStorage.setItem('respondentDatabase', JSON.stringify(respondentDatabase));
+        localStorage.setItem('nextRespondentId', nextRespondentId.toString());
+      } catch (e) {}
+      updateTotalSubmissions();
+      renderDatabase();
+      updateAnalytics();
+      alert('✓ All respondents have been successfully deleted from the database.');
+    }
+
+    function filterDatabase() { renderDatabase(); }
+
+    function exportDatabase() {
+      if (respondentDatabase.length === 0) { alert('No data to export. Database is empty.'); return; }
+      alert('Exporting database... (Feature placeholder)');
+    }
+
+    function viewRespondent(id) {
+      const respondent = respondentDatabase.find(r => r.id === id);
+      if (respondent) {
+        const langLabel = respondent.language === 'tl' ? 'Tagalog 🇵🇭' : 'English 🇬🇧';
+        alert(`Viewing respondent #${id}\n\nName: ${respondent.fullName}\nType: ${respondent.type}\nCourse: ${respondent.course}\nQuestion Type: ${respondent.questionType || 'N/A'}\nLanguage: ${langLabel}\nAnswered: ${respondent.answeredQuestions}/${respondent.totalQuestions}\nDate: ${respondent.dateSubmitted}`);
+      }
+    }
+
+    function toggleNetwork() {
+      const badge = document.getElementById('status-badge');
+      const btn = document.getElementById('toggle-net-btn');
+      if (badge.innerText === 'ONLINE') {
+        badge.innerText = 'OFFLINE';
+        badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30';
+        btn.innerHTML = `<i class="fa-solid fa-toggle-off text-amber-400"></i> Simulate Online`;
+      } else {
+        badge.innerText = 'ONLINE';
+        badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+        btn.innerHTML = `<i class="fa-solid fa-toggle-on text-emerald-400"></i> Simulate Offline`;
+      }
+    }
+
+    function updateAdminUI() {
+      const nameDisplay = document.getElementById('admin-name-display');
+      const avatar = document.getElementById('admin-avatar');
+      if (nameDisplay) nameDisplay.innerText = currentAdminName;
+      if (avatar) avatar.innerText = currentAdminName.charAt(0).toUpperCase();
+    }
+
+    function openAdminModal() {
+      document.getElementById('admin-name-input').value = currentAdminName;
+      document.getElementById('system-password-input').value = ''; 
+      document.getElementById('admin-modal').classList.remove('hidden');
+      document.getElementById('admin-modal').classList.add('flex');
+    }
+
+    function closeAdminModal() {
+      document.getElementById('admin-modal').classList.add('hidden');
+      document.getElementById('admin-modal').classList.remove('flex');
+    }
+
+    function saveAdminSettings() {
+      const newName = document.getElementById('admin-name-input').value.trim();
+      const newPwd = document.getElementById('system-password-input').value.trim();
+      
+      if (newName) {
+        currentAdminName = newName;
+        localStorage.setItem('currentAdminName', currentAdminName);
+        updateAdminUI();
+      }
+      
+      if (newPwd) {
+        if (/^\d{4}$/.test(newPwd)) {
+          systemPassword = newPwd;
+          localStorage.setItem('systemPassword', systemPassword);
+          alert("Admin name and password updated successfully!");
+        } else {
+          alert("Password must be exactly 4 digits.");
+          return;
+        }
+      } else {
+        alert("Admin settings saved successfully!");
+      }
+      
+      closeAdminModal();
+    }
+
+    window.onload = function() {
+      if (isLoggedIn) {
+        document.getElementById('login-overlay').classList.add('hidden');
+      }
+      updateTotalSubmissions();
+      renderDatabase();
+      updateAnalytics();
+      updateAdminUI();
+      const dateEl = document.getElementById('respondent-date');
+      if (dateEl) dateEl.value = getLocalDate();
+    };
+  </script>
 </body>
 </html>
